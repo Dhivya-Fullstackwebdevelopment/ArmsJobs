@@ -9,6 +9,8 @@ import { FaUser } from "react-icons/fa6";
 import { MdDelete, MdModeEdit, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { Pagination } from "../../common/Pagination";
 import { IoMdSearch } from "react-icons/io";
+import { ClientEnquiryAddPopup } from "./AddClientEnquiryPopup";
+import { EditClientEnquiryPopup } from "./EditClientEnquiryPopup";
 
 // Define a Candidate type
 interface ClientEnquiry {
@@ -135,7 +137,6 @@ const MOCK_CLIENTENQUIRY_DATA: ClientEnquiry[] = [
     availableForHire: true,
     preferredJobRoles: ["Frontend Developer", "UI/UX Designer"]
   },
-  // Add more mock candidates as needed
 ];
 
 export const ClientEnquiryTable = () => {
@@ -146,6 +147,24 @@ export const ClientEnquiryTable = () => {
   const indexOfLastClientEnquiry = currentPage * itemsPerPage;
   const indexOfFirstClient = indexOfLastClientEnquiry - itemsPerPage;
   const currentClientEnquiry = clientEnquiry.slice(indexOfFirstClient, indexOfLastClientEnquiry);
+  const [showAddClientEnquiryPopup, setShowAddClientEnquiryPopup] = useState<boolean>(false)
+  const [showEditClientEnquiryPopup, setShowEditClientEnquiryPopup] = useState<boolean>(false)
+
+  const openAddClientEnquiryPopup = () => {
+    setShowAddClientEnquiryPopup(true)
+  }
+
+  const closeAddClientEnquiryPopup = () => {
+    setShowAddClientEnquiryPopup(false)
+  }
+
+  const openEditClientEnquiryPopup = () => {
+    setShowEditClientEnquiryPopup(true)
+  }
+
+  const closeEditClientEnquiryPopup = () => {
+    setShowEditClientEnquiryPopup(false)
+  }
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -167,10 +186,11 @@ export const ClientEnquiryTable = () => {
             <span className="mx-2 pt-2 text-xl"><MdOutlineKeyboardArrowRight /></span>
             <span className="text-gray-500 pt-2 text-sm font-medium underline">Dashboard</span>
             <span className="mx-2 pt-2 text-sm">{"/"}</span>
-            <span className="text-gray-500 pt-2 text-sm font-medium underline">Client Enquiry</span>
+            <span className="text-gray-500 pt-2 text-sm font-medium">Client Enquiry</span>
           </div>
           <div className="flex items-center gap-4">
             <Button
+              onClick={openAddClientEnquiryPopup}
               buttonType="button"
               buttonTitle="Client Enquiry"
               icon={
@@ -263,10 +283,15 @@ export const ClientEnquiryTable = () => {
                     <td className="px-2 py-3">
                       <div className="flex items-center space-x-2">
                         {/* Edit Button */}
-                        <div className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
+                        <div
+                           onClick={(e) => {
+                            e.stopPropagation(); // Prevent row navigation
+                            openEditClientEnquiryPopup(); // Open the popup
+                          }}
+                        className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
                           <MdModeEdit className="text-white group-hover:text-armsjobslightblue text-xl" />
                           {/* Tooltip */}
-                          <div className="absolute -top-6 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
+                          <div className="absolute -top-6.5 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
                             Edit
                           </div>
                         </div>
@@ -275,7 +300,7 @@ export const ClientEnquiryTable = () => {
                         <div className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
                           <MdDelete className="text-white group-hover:text-armsjobslightblue text-xl" />
                           {/* Tooltip */}
-                          <div className="absolute -top-6 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
+                          <div className="absolute -top-6.5 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
                             Delete
                           </div>
                         </div>
@@ -296,6 +321,8 @@ export const ClientEnquiryTable = () => {
           onItemsPerPageChange={handleItemsPerPageChange}
         />
       </div>
+      {showAddClientEnquiryPopup && (<ClientEnquiryAddPopup closePopup={closeAddClientEnquiryPopup} />)}
+      {showEditClientEnquiryPopup && (<EditClientEnquiryPopup closePopup={closeEditClientEnquiryPopup} />)}
     </div>
   );
 };

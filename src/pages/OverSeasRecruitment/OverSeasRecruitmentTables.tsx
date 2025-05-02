@@ -9,6 +9,8 @@ import { FaUser } from "react-icons/fa6";
 import { MdDelete, MdModeEdit, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { Pagination } from "../../common/Pagination";
 import { IoMdSearch } from "react-icons/io";
+import { OverSeasAddPopup } from "./AddOverSeasRecruitmentPopup";
+import { EditOverSeasPopup } from "./EditOverSeasRecruitment";
 
 // Define a Candidate type
 interface OverseasRecruitmentAgency {
@@ -95,6 +97,24 @@ export const OverSeasRecruitmentTable = () => {
   const indexOfLastRecruitment = currentPage * itemsPerPage;
   const indexOfFirstRecruitment = indexOfLastRecruitment - itemsPerPage;
   const currentRecruitmentAgencies = recruitmentAgencies.slice(indexOfFirstRecruitment, indexOfLastRecruitment);
+  const [showOverSeasPopup, setShowOverSeasPopup] = useState<boolean>(false)
+  const [showEditOverSeasPopup, setShowEditOverSeasPopup] = useState<boolean>(false)
+
+  const openOverseasPopup = () => {
+    setShowOverSeasPopup(true)
+  }
+
+  const closeOverseasPopup = () => {
+    setShowOverSeasPopup(false)
+  }
+
+  const openEditOverseasPopup = () => {
+    setShowEditOverSeasPopup(true)
+  }
+
+  const closeEditOverseasPopup = () => {
+    setShowEditOverSeasPopup(false)
+  }
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -120,6 +140,7 @@ export const OverSeasRecruitmentTable = () => {
           </div>
           <div className="flex items-center gap-4">
             <Button
+              onClick={openOverseasPopup}
               buttonType="button"
               buttonTitle="Overseas Recruitment"
               icon={
@@ -212,10 +233,15 @@ export const OverSeasRecruitmentTable = () => {
                     <td className="px-2 py-3">
                       <div className="flex items-center space-x-2">
                         {/* Edit Button */}
-                        <div className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
+                        <div
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent row navigation
+                          openEditOverseasPopup(); // Open the popup
+                        }}
+                        className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
                           <MdModeEdit className="text-white group-hover:text-armsjobslightblue text-xl" />
                           {/* Tooltip */}
-                          <div className="absolute -top-6 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
+                          <div className="absolute -top-6.5 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
                             Edit
                           </div>
                         </div>
@@ -224,7 +250,7 @@ export const OverSeasRecruitmentTable = () => {
                         <div className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
                           <MdDelete className="text-white group-hover:text-armsjobslightblue text-xl" />
                           {/* Tooltip */}
-                          <div className="absolute -top-6 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
+                          <div className="absolute -top-6.5 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
                             Delete
                           </div>
                         </div>
@@ -245,6 +271,8 @@ export const OverSeasRecruitmentTable = () => {
           onItemsPerPageChange={handleItemsPerPageChange}
         />
       </div>
+      {showOverSeasPopup&&<OverSeasAddPopup closePopup={closeOverseasPopup}/>}
+      {showEditOverSeasPopup&&<EditOverSeasPopup closePopup={closeEditOverseasPopup}/>}
     </div>
   );
 };

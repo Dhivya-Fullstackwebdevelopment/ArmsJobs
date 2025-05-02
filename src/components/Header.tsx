@@ -51,11 +51,11 @@ export const Header = () => {
                 <NavLink to="/Dashboard" className="active-nav text-black font-bold">Dashboard</NavLink>
               </li>
               <li>
-                <NavLink to="/Candidate" className="active-nav text-black font-bold">Candidate</NavLink>
+                <NavLink to="/Candidate" className="active-nav text-black font-bold">Candidate(New/Own Visa)</NavLink>
               </li>
-              <li>
+              {/* <li>
                 <NavLink to="/UAEOwnFreeLauncerVisa" className="active-nav text-black font-bold">UAE Own/Freelancer Visa</NavLink>
-              </li>
+              </li> */}
               <li>
                 <NavLink to="/AgentsSupplier" className="active-nav text-black font-bold">Agents/Supplier</NavLink>
               </li>
@@ -116,5 +116,3 @@ export const Header = () => {
     </header>
   );
 }
-
-

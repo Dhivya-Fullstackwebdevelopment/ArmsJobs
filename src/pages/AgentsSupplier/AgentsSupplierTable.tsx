@@ -8,6 +8,8 @@ import { FaUser } from "react-icons/fa6";
 import { MdDelete, MdModeEdit, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { Pagination } from "../../common/Pagination";
 import { IoMdSearch } from "react-icons/io";
+import { AddAgentsSupplierPopup } from "./AddAgentsSupplierPopup";
+import { EditAgentsSupplierPopup } from "./EditAgentSupplierPopup";
 
 
 
@@ -144,10 +146,11 @@ export const AgentSupplierTable = () => {
   const [agentSupplier] = useState<AgentSupplier[]>(MOCK_AgentSupplier_DATA);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10); // Default 10 items per page
-
   const indexOfLastCandidate = currentPage * itemsPerPage;
   const indexOfFirstCandidate = indexOfLastCandidate - itemsPerPage;
   const currentAgentSupplier = agentSupplier.slice(indexOfFirstCandidate, indexOfLastCandidate);
+  const [showAddAgentsSupplierPopup, setShowAddAgentsSupplierPopup] = useState(false);
+  const [showEditAgentsSupplierPopup, setShowEditAgentsSupplierPopup] = useState(false);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -158,6 +161,22 @@ export const AgentSupplierTable = () => {
     setItemsPerPage(items);
     setCurrentPage(1); // Reset to the first page when items per page changes
   };
+
+  const openAddAgentsSupplierPopup = () => {
+    setShowAddAgentsSupplierPopup(true);
+  }
+
+  const closeAddAgentsSupplierPopup = () => {
+    setShowAddAgentsSupplierPopup(false)
+  }
+
+  const openEditAgentsSupplierPopup = () => {
+    setShowEditAgentsSupplierPopup(true);
+  }
+
+  const closeEditAgentsSupplierPopup = () => {
+    setShowEditAgentsSupplierPopup(false)
+  }
 
   return (
     <div className="p-6">
@@ -174,6 +193,7 @@ export const AgentSupplierTable = () => {
           </div>
           <div className="flex items-center gap-4">
             <Button
+              onClick={openAddAgentsSupplierPopup}
               buttonType="button"
               buttonTitle="Agents/Supplier"
               icon={
@@ -261,25 +281,30 @@ export const AgentSupplierTable = () => {
                   <td className="px-2 py-3">{new Date(agent.createdAt).toLocaleString()}</td>
                   <td className="px-2 py-3 sticky right-0 z-10 bg-armsWhite border-b-2 border-armsgrey">
                     <td className="px-2 py-3">
-                    <div className="flex items-center space-x-2">
-                      {/* Edit Button */}
-                      <div className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
-                        <MdModeEdit className="text-white group-hover:text-armsjobslightblue text-xl" />
-                        {/* Tooltip */}
-                        <div className="absolute -top-6 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
-                          Edit
+                      <div className="flex items-center space-x-2">
+                        {/* Edit Button */}
+                        <div 
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent row navigation
+                            openEditAgentsSupplierPopup(); // Open the popup
+                          }}
+                        className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
+                          <MdModeEdit className="text-white group-hover:text-armsjobslightblue text-xl" />
+                          {/* Tooltip */}
+                          <div className="absolute -top-6.5 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
+                            Edit
+                          </div>
                         </div>
-                      </div>
 
-                      {/* Delete Button */}
-                      <div className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
-                        <MdDelete className="text-white group-hover:text-armsjobslightblue text-xl" />
-                        {/* Tooltip */}
-                        <div className="absolute -top-6 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
-                          Delete
+                        {/* Delete Button */}
+                        <div className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
+                          <MdDelete className="text-white group-hover:text-armsjobslightblue text-xl" />
+                          {/* Tooltip */}
+                          <div className="absolute -top-6.5 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
+                            Delete
+                          </div>
                         </div>
                       </div>
-                    </div>
                     </td>
                   </td>
                 </tr>
@@ -295,6 +320,8 @@ export const AgentSupplierTable = () => {
           onItemsPerPageChange={handleItemsPerPageChange}
         />
       </div>
+      {showAddAgentsSupplierPopup && <AddAgentsSupplierPopup closePopup={closeAddAgentsSupplierPopup} />}
+      {showEditAgentsSupplierPopup && <EditAgentsSupplierPopup closePopup={closeEditAgentsSupplierPopup} />}
     </div>
   );
 };

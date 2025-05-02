@@ -569,7 +569,7 @@ export const CandidateTable = () => {
                 <th className="bg-main px-2 py-3 ">Upload Relevant Docs</th>
                 <th className="bg-main px-2 py-3 ">Status</th>
                 <th className="bg-main px-2 py-3 ">Created At</th>
-                <th className="bg-main px-2 py-3 ">Actions</th>
+                <th className="bg-main px-2 py-3 sticky right-0 z-10">Actions</th>
               </tr>
             </thead>
             <tbody className="whitespace-nowrap ">
@@ -619,32 +619,32 @@ export const CandidateTable = () => {
                   </td>
                   <td className="px-2 py-1">{candidate.status}</td>
                   <td className="px-2 py-3">{new Date(candidate.createdAt).toLocaleString()}</td>
-                  <td className="px-2 py-3">
-                    <div className="flex items-center space-x-2">
+                  <td className="px-2 py-3 sticky right-0 z-10 bg-armsWhite border-b-2 border-armsgrey">
+                    <td className="px-2 py-3">
+                      <div className="flex items-center space-x-2">
+                        {/* Edit Button */}
+                        <div className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200"
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent row navigation
+                            openEditCandidatePopup(); // Open the popup
+                          }}>
+                          <MdModeEdit className="text-white group-hover:text-armsjobslightblue text-xl" />
+                          {/* Tooltip */}
+                          <div className="absolute -top-6.5 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
+                            Edit
+                          </div>
+                        </div>
 
-                      {/* Edit Button */}
-                      <div className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200"
-                        onClick={(e) => {
-                          e.stopPropagation(); // Prevent row navigation
-                          openEditCandidatePopup(); // Open the popup
-                        }}>
-                        <MdModeEdit className="text-white group-hover:text-armsjobslightblue text-xl" />
-
-                        {/* Tooltip */}
-                        <div className="absolute -top-6 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
-                          Edit
+                        {/* Delete Button */}
+                        <div className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
+                          <MdDelete className="text-white group-hover:text-armsjobslightblue text-xl" />
+                          {/* Tooltip */}
+                          <div className="absolute -top-6.5 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
+                            Delete
+                          </div>
                         </div>
                       </div>
-
-                      {/* Delete Button */}
-                      <div className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
-                        <MdDelete className="text-white group-hover:text-armsjobslightblue text-xl" />
-                        {/* Tooltip */}
-                        <div className="absolute -top-6 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
-                          Delete
-                        </div>
-                      </div>
-                    </div>
+                    </td>
                   </td>
                 </tr>
               ))}
