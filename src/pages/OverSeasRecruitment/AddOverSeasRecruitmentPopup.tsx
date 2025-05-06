@@ -355,9 +355,10 @@ export const OverSeasAddPopup: React.FC<OverSeasAddPopupProps> = ({
                     <div className="flex justify-center gap-4 mt-8 ">
                         <div>
                             <Button
+                                onClick={closePopup}
                                 buttonType="button"
                                 buttonTitle="Cancel"
-                                className="px-6 py-2 text-armsBlack font-semibold"
+                                className="px-7 py-2.5 text-armsBlack rounded-sm font-semibold hover:bg-gray-200"
                             />
                         </div>
                         <div>

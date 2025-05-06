@@ -17,8 +17,7 @@ export const EditClientEnquiryPopup: React.FC<EditClientEnquiryAddPopupProps> = 
     closePopup,
 }) => {
     //   if (!isOpen) return null;
-    const [activeTab, setActiveTab] = useState("Personal Information");
-    // const tabs = ["Personal Information", "Visa & Work Eligibility", "Job Information", "Documents Upload"];
+    const [activeTab, setActiveTab] = useState("Company Details");
     const tabs = ['Company Details', "Personal Information", "Facility Info", "Remarks"];
     return (
         <div className="fixed inset-0 bg-armsAsh bg-opacity-70 flex justify-center items-start pt-25 z-50">
@@ -333,15 +332,15 @@ export const EditClientEnquiryPopup: React.FC<EditClientEnquiryAddPopupProps> = 
                     </div>
                 )}
 
-
                 {/* Buttons */}
                 <div className="absolute bottom-0 left-0 right-0 py-4 ">
                     <div className="flex justify-center gap-4 mt-8 ">
                         <div>
                             <Button
+                                onClick={closePopup}
                                 buttonType="button"
                                 buttonTitle="Cancel"
-                                className="px-6 py-2 text-armsBlack font-semibold"
+                                className="px-7 py-2.5 text-armsBlack rounded-sm font-semibold hover:bg-gray-200"
                             />
                         </div>
                         <div>

@@ -10,7 +10,7 @@
 // import { MdDelete, MdModeEdit, MdOutlineKeyboardArrowRight } from "react-icons/md";
 // import { EditCandidatePopup } from "./EditCandidatePopup";
 // import { Pagination } from "../../common/Pagination";
-// import { fetchCandidatesList } from "../../api/apiConfig";
+// import { fetchCandidatesList } from "../../Commonapicall/Candidateapicall/Candidateapis";
 
 // interface CandidatesApiResponse {
 //   results: CandidateList[];
@@ -115,7 +115,7 @@
 //     <div className="p-6">
 //       <div className="bg-white px-5 py-1 rounded-lg shadow-sm ">
 //         {/* Header Section */}
-//         <div className="flex items-center justify-between pb-2 py-2">
+//         <div className="flex flex-wrap items-center justify-between pb-2 py-2 gap-y-3">
 //           <div className="flex items-center">
 //             <span className="text-2xl font-bold">Candidate</span>
 //             <span className="mx-2 pt-2 text-xl"><MdOutlineKeyboardArrowRight /></span>
@@ -182,16 +182,16 @@
 //                   <th className="bg-main px-2 py-3 ">Availability to join</th>
 //                   <th className="bg-main px-2 py-3 ">Position Applying For</th>
 //                   <th className="bg-main px-2 py-3 ">Category</th>
-//                   <th className="bg-main px-2 py-3 ">years of UAE Experience</th>
+//                   <th className="bg-main px-2 py-3 ">Years of UAE Experience</th>
 //                   <th className="bg-main px-2 py-3 ">Skills & Tasks You can Perform</th>
-//                   <th className="bg-main px-2 py-3 ">Tasks</th>
+//                   {/* <th className="bg-main px-2 py-3 ">Tasks</th> */}
 //                   <th className="bg-main px-2 py-3 ">Preferred Work Location</th>
 //                   <th className="bg-main px-2 py-3 ">Expected Salary (AED)</th>
 //                   <th className="bg-main px-2 py-3 ">Upload CV</th>
 //                   <th className="bg-main px-2 py-3 ">Upload Relevant Docs</th>
 //                   <th className="bg-main px-2 py-3 ">Status</th>
 //                   <th className="bg-main px-2 py-3 ">Created At</th>
-//                   <th className="bg-main px-2 py-3 ">Actions</th>
+//                   <th className="bg-main px-2 py-3 sticky right-0 z-10">Actions</th>
 //                 </tr>
 //               </thead>
 //               <tbody className="whitespace-nowrap ">
@@ -270,7 +270,7 @@
 //                     </td>
 //                     <td className="px-2 py-3">{new Date(candidate.created_at).toLocaleString()}</td>
 //                     <td className="px-2 py-3 sticky right-0 z-10 bg-armsWhite border-b-2 border-armsgrey">
-//                       <td className="px-2 py-3">
+//                       {/* <td className="px-2 py-3"> */}
 //                         <div className="flex items-center space-x-2">
 //                           {/* Edit Button */}
 //                           <div className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200"
@@ -294,7 +294,7 @@
 //                             </div>
 //                           </div>
 //                         </div>
-//                       </td>
+//                       {/* </td> */}
 //                     </td>
 //                   </tr>
 //                 ))}
@@ -443,7 +443,6 @@ const MOCK_CANDIDATES_DATA: CandidateProps[] = [
     availableForHire: true,
     preferredJobRoles: ["Frontend Developer", "UI/UX Designer"]
   },
-  // Add more mock candidates as needed
 ];
 
 export const CandidateTable = () => {
@@ -478,7 +477,6 @@ export const CandidateTable = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     //dispatch(setCurrentPage(page));
-
   };
 
   const handleItemsPerPageChange = (items: number) => {
@@ -486,22 +484,19 @@ export const CandidateTable = () => {
     setCurrentPage(1); // Reset to the first page when items per page changes
   };
 
-
   return (
     // <div className="min-h-screen bg-gray-100">
     <div className="p-6">
       <div className="bg-white px-5 py-1 rounded-lg shadow-sm ">
         {/* Header Section */}
-        <div className="flex items-center justify-between pb-2 py-2">
+        <div className="flex flex-wrap items-center justify-between pb-2 py-2 gap-y-4">
           {/* <h5 className="text-3xl font-bold">Candidate</h5> */}
-          <div className="flex items-center">
+          <div className="flex flex-wrap items-center">
             <span className="text-3xl font-bold">Candidate</span>
             <span className="mx-2 pt-2 text-xl"><MdOutlineKeyboardArrowRight /></span>
             <span className="text-gray-500 pt-2 text-sm font-medium underline">Dashboard</span>
           </div>
           <div className="flex items-center gap-4">
-
-
             <Button
               buttonType="button"
               buttonTitle="Candidate"
@@ -587,7 +582,6 @@ export const CandidateTable = () => {
                       </div>
                     )}
                   </td>
-
                   <td className="px-2 py-1">{candidate.fullName}</td>
                   <td className="px-2 py-1">{candidate.mobile}</td>
                   <td className="px-2 py-1">{candidate.whatsapp}</td>
@@ -634,7 +628,6 @@ export const CandidateTable = () => {
                             Edit
                           </div>
                         </div>
-
                         {/* Delete Button */}
                         <div className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
                           <MdDelete className="text-white group-hover:text-armsjobslightblue text-xl" />
@@ -659,7 +652,6 @@ export const CandidateTable = () => {
           onPageChange={handlePageChange}
           onItemsPerPageChange={handleItemsPerPageChange}
         />
-
       </div>
       {showAddCandidatePopup && <AddCandidatePopup closePopup={closeAddCategoryPopup} />}
       {showEditCandidatePopup && <EditCandidatePopup closePopup={closeEditCategoryPopup} />}

@@ -11,6 +11,7 @@ import { Pagination } from "../../common/Pagination";
 import { IoMdSearch } from "react-icons/io";
 import { OverSeasAddPopup } from "./AddOverSeasRecruitmentPopup";
 import { EditOverSeasPopup } from "./EditOverSeasRecruitment";
+import { useNavigate } from "react-router-dom";
 
 // Define a Candidate type
 interface OverseasRecruitmentAgency {
@@ -89,7 +90,6 @@ const MOCK_RECRUITMENT_AGENCIES: OverseasRecruitmentAgency[] = [
 
 
 export const OverSeasRecruitmentTable = () => {
-
   // const [recruitmentAgencies, setRecruitmentAgencies] = useState<OverseasRecruitmentAgency[]>(MOCK_RECRUITMENT_AGENCIES);
   const [recruitmentAgencies] = useState<OverseasRecruitmentAgency[]>(MOCK_RECRUITMENT_AGENCIES);
   const [currentPage, setCurrentPage] = useState(1);
@@ -99,7 +99,8 @@ export const OverSeasRecruitmentTable = () => {
   const currentRecruitmentAgencies = recruitmentAgencies.slice(indexOfFirstRecruitment, indexOfLastRecruitment);
   const [showOverSeasPopup, setShowOverSeasPopup] = useState<boolean>(false)
   const [showEditOverSeasPopup, setShowEditOverSeasPopup] = useState<boolean>(false)
-
+  const navigate = useNavigate()
+  
   const openOverseasPopup = () => {
     setShowOverSeasPopup(true)
   }
@@ -130,7 +131,7 @@ export const OverSeasRecruitmentTable = () => {
     <div className="p-6">
       <div className="bg-white px-5 py-1 rounded-lg shadow-sm ">
         {/* Header Section */}
-        <div className="flex items-center justify-between pb-2 py-2">
+        <div className="flex flex-wrap items-center justify-between pb-2 py-2 gap-y-3">
           <div className="flex items-center">
             <span className="text-2xl font-bold">Overseas Recruitment</span>
             <span className="mx-2 pt-2 text-xl"><MdOutlineKeyboardArrowRight /></span>
@@ -209,7 +210,9 @@ export const OverSeasRecruitmentTable = () => {
             </thead>
             <tbody className="whitespace-nowrap">
               {currentRecruitmentAgencies.map((agency) => (
-                <tr key={agency.id} className="border-b-2 border-armsgrey">
+                <tr key={agency.id} 
+                onClick={() => navigate(`/OverSeasRecruitment/${agency.id}`)}
+                className="border-b-2 border-armsgrey hover:bg-gray-100">
                   <td className="px-2 py-7">{agency.id}</td>
                   <td className="px-2 py-7">{agency.companyName}</td>
                   <td className="px-2 py-7">{agency.country}</td>

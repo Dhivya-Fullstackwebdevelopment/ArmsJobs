@@ -14,6 +14,12 @@
     @apply text-armsjobslightblue cursor-pointer before:scale-x-100 transition-all hover:transition-all;
 }
 
+.radio-armsjobslightblue {
+    @apply text-armsjobslightblue  focus:ring-armsgrey; /* Example */
+  }
+
+
+  
 
 @theme {
 
@@ -33,3 +39,5 @@
   --color-mindfulAsh: #707070; */
 
 }
+
+

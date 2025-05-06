@@ -1,8 +1,7 @@
 import loginImg from '../../assets/images/loginImg.jpg';
 import armslogo from '../../assets/images/armslogo.jpg';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Context/AuthContext';
-
+import { useAuth } from '../Context/AuthContext';3
 
 function Login() {
   const navigate = useNavigate();
@@ -16,20 +15,20 @@ function Login() {
   };
   
   return (
-    <div className="min-h-screen flex items-center justify-center bg-main">
-      <div className="flex bg-white rounded-lg shadow-lg overflow-hidden max-w-4xl w-full">
+    <div className="min-h-screen flex items-center justify-center bg-main px-4">
+      <div className="flex flex-row md:flex-row bg-white rounded-lg shadow-lg overflow-hidden max-w-4xl w-full">
         {/* Left Image Side */}
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2 h-64 md:h-auto">
           <img src={loginImg} alt="Login" className="h-full w-full object-cover" />
         </div>
 
         {/* Right Form Side */}
-        <div className="w-1/2 p-10">
+        <div className="w-full md:w-1/2 p-6 md:p-10">
           <div className="mb-6">
             <img
               src={armslogo} // Replace with actual logo
               alt="armslogo"
-              className="h-32 w-full mb-2 object-contain object-left"
+              className="h-24 w-auto mx-auto md:mx-0 mb-2 object-contain object-left"
             />
             <h2 className="text-xl font-bold text-gray-800 mb-2">Login Here!</h2>
           </div>

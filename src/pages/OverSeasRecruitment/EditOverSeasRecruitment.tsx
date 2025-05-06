@@ -17,7 +17,6 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
 }) => {
     //   if (!isOpen) return null;
     const [activeTab, setActiveTab] = useState("Company Details");
-    // const tabs = ["Personal Information", "Visa & Work Eligibility", "Job Information", "Documents Upload"];
     const tabs = ['Company Details', "Recruitment Info", "Documents & Notes"];
     return (
         <div className="fixed inset-0 bg-armsAsh bg-opacity-70 flex justify-center items-start pt-25 z-50">
@@ -214,11 +213,9 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                         </form>
                     </div>
                 )}
-
-
+                {/* Documents & Notes */}
                 {activeTab === "Documents & Notes" && (
                     <div className="flex flex-wrap gap-2 px-4 w-1/2">
-
                         {/* <div className="flex flex-col gap-2">
                             <label htmlFor="uploadFile" className="text-sm font-semibold mb-1">
                                 Upload Relevant Documents (License Copy / Profile / Exp Certificate etc)
@@ -230,8 +227,6 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                                 className="w-full rounded-[5px] border-[1px] border-armsgrey px-2 py-1.5 text-sm file:mr-4 file:py-1.5 file:px-4 file:rounded file:border-0 file:text-white file:bg-armblue hover:file:bg-blue-600"
                             />
                         </div> */}
-
-
                         <div className="flex flex-col gap-2 flex-1">
                             <label htmlFor="Uploadcv" className="text-sm font-semibold">
                                 Upload CV
@@ -240,31 +235,25 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                                 <div className="text-gray-400 text-5xl mb-2">
                                     <FaCloudUploadAlt className="text-main" />
                                 </div>
-
                                 <div className="w-max-43 flex flex-col items-center">
                                     <p className="text-armsBlack text-xs mb-2 text-center">
                                         Drag and drop your file here
                                     </p>
-
                                     <div className="flex items-center w-full mb-2">
                                         <hr className="flex-grow border-t border-armsBlack" />
                                         <span className="px-2 text-armsBlack text-xs">or</span>
                                         <hr className="flex-grow border-t border-armsBlack" />
                                     </div>
                                 </div>
-
                                 <Button
                                     buttonType="button"
                                     buttonTitle="Browse Files"
                                     className="bg-armsjobslightblue text-armsWhite font-semibold px-4 py-1 rounded hover:bg-armsWhite hover:text-armsjobslightblue border border-armsjobslightblue mb-2"
                                 />
-
                                 <p className="text-xs text-gray-400 mb-5">Max file size 500KB.</p>
                             </div>
 
                         </div>
-
-
                         <div className="flex flex-col gap-2 flex-1">
                             <label htmlFor="additionalDetails" className="text-sm font-semibold mb-1">
                                 Additional Details
@@ -280,15 +269,15 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                     </div>
                 )}
 
-
                 {/* Buttons */}
                 <div className="absolute bottom-0 left-0 right-0 py-4 ">
                     <div className="flex justify-center gap-4 mt-8 ">
                         <div>
                             <Button
+                                onClick={closePopup}
                                 buttonType="button"
                                 buttonTitle="Cancel"
-                                className="px-6 py-2 text-armsBlack font-semibold"
+                                className="px-7 py-2.5 text-armsBlack rounded-sm font-semibold hover:bg-gray-200"
                             />
                         </div>
                         <div>

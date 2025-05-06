@@ -10,6 +10,7 @@ import { Pagination } from "../../common/Pagination";
 import { IoMdSearch } from "react-icons/io";
 import { AddAgentsSupplierPopup } from "./AddAgentsSupplierPopup";
 import { EditAgentsSupplierPopup } from "./EditAgentSupplierPopup";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -151,6 +152,7 @@ export const AgentSupplierTable = () => {
   const currentAgentSupplier = agentSupplier.slice(indexOfFirstCandidate, indexOfLastCandidate);
   const [showAddAgentsSupplierPopup, setShowAddAgentsSupplierPopup] = useState(false);
   const [showEditAgentsSupplierPopup, setShowEditAgentsSupplierPopup] = useState(false);
+  const navigate = useNavigate()
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -182,8 +184,7 @@ export const AgentSupplierTable = () => {
     <div className="p-6">
       <div className="bg-white px-5 py-1 rounded-lg shadow-sm ">
         {/* Header Section */}
-        <div className="flex items-center justify-between pb-2 py-2">
-          {/* <h5 className="text-3xl font-bold">Candidate</h5> */}
+        <div className="flex flex-wrap items-center justify-between pb-2 py-2 gap-y-3">
           <div className="flex items-center">
             <span className="text-2xl font-bold">Agents/Supplier</span>
             <span className="mx-2 pt-2 text-xl"><MdOutlineKeyboardArrowRight /></span>
@@ -264,7 +265,9 @@ export const AgentSupplierTable = () => {
             </thead>
             <tbody className="whitespace-nowrap ">
               {currentAgentSupplier.map((agent) => (
-                <tr key={agent.id} className="border-b-2 border-armsgrey ">
+                <tr key={agent.id}
+                  onClick={() => navigate(`/AgentSupplyView/${agent.id}`)}
+                  className="border-b-2 border-armsgrey hover:bg-gray-100 ">
                   <td className="px-2 py-3">{agent.id}</td>
                   <td className="px-2 py-3">{agent.fullName}</td>
                   <td className="px-2 py-3">{agent.mobile}</td>
@@ -283,12 +286,12 @@ export const AgentSupplierTable = () => {
                     <td className="px-2 py-3">
                       <div className="flex items-center space-x-2">
                         {/* Edit Button */}
-                        <div 
+                        <div
                           onClick={(e) => {
                             e.stopPropagation(); // Prevent row navigation
                             openEditAgentsSupplierPopup(); // Open the popup
                           }}
-                        className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
+                          className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
                           <MdModeEdit className="text-white group-hover:text-armsjobslightblue text-xl" />
                           {/* Tooltip */}
                           <div className="absolute -top-6.5 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
