@@ -55,7 +55,7 @@ function Login() {
             </div>
             <button
               type="submit"
-              className="w-full bg-armsjobslightblue text-white py-2 rounded transition-colors"
+              className="w-full cursor-pointer bg-armsjobslightblue text-white py-2 rounded transition-colors"
             >
               Login
             </button>

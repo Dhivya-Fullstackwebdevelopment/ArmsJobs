@@ -1,97 +1,69 @@
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { Candidate, CandidateRemark } from "../../types/CandidateList";
+import {  CandidateRemark } from "../../types/CandidateList";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import Profileimg from "../../assets/images/profileimg.jpg"
 import { Button } from "../../common/Button";
-import { AgentOrSupply } from "../../types/AgentSupplyList";
+//import { AgentOrSupply } from "../../types/AgentSupplyList";
 import { FaArrowLeft } from "react-icons/fa6";
 import { EditAgentsSupplierPopup } from "./EditAgentSupplierPopup";
-//import { EditAgentsSupplierPopup } from "./EditAgentSupplierPopup";
-// import { CandidateViewShimmer } from "../../components/ShimmerLoading";
+import { AgentSupplierViewShimmer } from "../../components/ShimmerLoading/ShimmerViewpage/CommonViewShimmer";
+import { fetchAgents, fetchAgentsList, fetchAgentsListById } from "../../Commonapicall/AgentsSupplierapicall/Agentsapis";
+import { AgentSupplier, ApiResponse } from "./AgentsSupplierTable";
+
+export interface Agent {
+    id: number;
+    name: string;
+}
+export interface AgentSearchResponse {
+    status: string;
+    message: string;
+    data: Agent[];
+    count: number;
+    next: string | null;
+    previous: string | null;
+}
 
 export const AgentSupplyView = () => {
+    
     const { id } = useParams<{ id: string }>();
-    const [candidate, setCandidate] = useState<Candidate | null>(null);
-    const [AgentOrSupply, setAgentOrSupply] = useState<AgentOrSupply | null>(null)
     const [remarks, setRemarks] = useState<CandidateRemark[]>([]);
     const [newRemark, setNewRemark] = useState("");
-    const [candidateList, setCandidateList] = useState<Candidate[]>([]);
-    const [searchQuery, setSearchQuery] = useState("");
+    const [agentSupplier, setAgentSupplier] = useState<AgentSupplier[]>([]);
+    const [searchQuer, setSearchQuer] = useState("");
     const [showEditAgentsSupplierPopup, setShowEditAgentsSupplierPopup] = useState(false);
-    // const [isLoading, setIsLoading] = useState(true);
-
+    const [agent, setAgent] = useState<AgentSupplier | null>(null);
     const navigate = useNavigate();
-
     const openEditAgentsSupplierPopup = () => {
         setShowEditAgentsSupplierPopup(true);
     }
-
     const closeEditAgentsSupplierPopup = () => {
         setShowEditAgentsSupplierPopup(false)
     }
-    // Mock data for demonstration
-    useEffect(() => {
-        // setIsLoading(true);
-        // Simulate API delay
-        const timer = setTimeout(() => {
-            const mockCandidate: Candidate = {
-                id: "1",
-                name: "Babu Mayan",
-                candidateId: "AJ247",
-                isActive: true,
-                mobileNumber: "+91 9884719615",
-                whatsappNumber: "+91 9551688774",
-                emailId: "kbalaganesh@gmail.com",
-                nationality: "Indian",
-                currentLocation: "Dubai",
-                visaType: "Freelance",
-                availabilityToJoinDate: "25/05/2025",
-                availabilityToJoinPeriod: "1 Week",
-                positionApplyingFor: "N/A",
-                category: "N/A",
-                otherCategory: "N/A",
-                yearsOfUAEExperience: "N/A",
-                skillsAndTasks: "N/A",
-                preferredWorkLocation: "N/A",
-                expectedSalary: "N/A",
-                documents: {
-                    cv: { name: "Babu.doc", size: "470 KB" },
-                    passport: { name: "passport", size: "150 KB" },
-                    insurance: { name: "insurance", size: "145 KB" },
-                    visa: { name: "visa", size: "421 KB" }
-                }
-            };
-            setCandidate(mockCandidate);
-            // Generate mock candidate list
-            const mockCandidateList = Array(13).fill(null).map((_, index) => ({
-                ...mockCandidate,
-                id: String(index + 1),
-                name: index === 0 ? "Babu Mayan" : `Srinithi Ravi ${index + 1}`,
-                candidateId: `AJ${247 + index}`
-            }));
-            setCandidateList(mockCandidateList);
-            // setIsLoading(false);
-        }, 1500); // 1.5 second delay to show loading state
-        return () => clearTimeout(timer);
-    }, [id]);
+    const [agents, setAgents] = useState<Agent[]>([]);
+    const [loading, setLoading] = useState(false);
+    
+    const handleSearch = async (query: string) => {
+        try {
+            const result = await fetchAgents(query);
+            setAgents(result);
+        } catch (err) {
+            console.error("Search error", err);
+        } 
+        // finally {
+        //     setLoading(false);
+        // }
+    };
+
 
     useEffect(() => {
-        const AgentOrSupply: AgentOrSupply = {
-            NameOfAgent: "Ahmed Khan",
-            EmailID: "ahmed.khan@recruitmenthub.com",
-            WhatsAppNumber: "+971-55-6789012",
-            MobileNumber: "+971-50-1234567",
-            agentDoRecruitment: "Yes",
-            AssociatedWithArms: "Yes, since 2021",
-            agentDoManpower: "Yes",
-            CategoriesYouCanSupply: "Construction Workers, Electricians, Drivers",
-            QuantityEstimates: "100-150 candidates per month",
-            AreasCovered: "UAE, Qatar, Saudi Arabia",
-            AdditionalNotes: "Can provide workers with verified experience and documentation"
-        };
-        setAgentOrSupply(AgentOrSupply);
-    }, []);
+        if (searchQuer.trim().length > 0) {
+            handleSearch(searchQuer);
+        } else {
+            setAgents([]); // Clear results if search is empty
+        }
+    }, [searchQuer]);
+
 
     const handleAddRemark = () => {
         if (newRemark.trim()) {
@@ -107,23 +79,39 @@ export const AgentSupplyView = () => {
         }
     };
 
-    // Filter candidates based on search query
-    const filteredCandidates = candidateList.filter(c =>
-        c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        c.candidateId.toLowerCase().includes(searchQuery.toLowerCase())
-    );
 
-    // if (isLoading) {
-    //   return (
-    //     <div className="min-h-screen bg-gray-100">
-    //       <Header />
-    //       <CandidateViewShimmer />
-    //     </div>
-    //   );
-    // }
+    const filteredCandidates = searchQuer.trim() ? agents : agentSupplier;
 
-    if (!candidate) {
-        return <div>Loading...</div>;
+
+    useEffect(() => {
+        const fetchAgent = async () => {
+            setLoading(true);
+            try {
+
+                const response = await fetchAgentsList() as ApiResponse;
+                console.log("response?.data?.data", response?.results?.data)
+                setAgentSupplier(response?.results?.data);
+                //setTotalItems(response.count);
+            } catch (err) {
+
+                console.error("Error fetching candidates:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchAgent();
+    }, []);
+
+    useEffect(() => {
+        if (id) {
+            fetchAgentsListById(Number(id))
+                .then(setAgent)
+                .catch(err => console.error(err.message));
+        }
+    }, [id]);
+
+    if (loading) {
+        return <AgentSupplierViewShimmer />;
     }
 
     return (
@@ -147,7 +135,7 @@ export const AgentSupplyView = () => {
                             icon={
                                 <FaArrowLeft />
                             }
-                            className="text-sm font-semibold border border-armsBlack px-4 py-2 rounded-md"
+                            className="px-4 py-2 bg-armsjobslightblue text-sm font-semibold text-armsWhite border-[1px] rounded-md cursor-pointer hover:bg-armsWhite hover:text-armsjobslightblue hover:border-armsjobslightblue"
                         />
                     </div>
                 </div>
@@ -163,8 +151,8 @@ export const AgentSupplyView = () => {
                                 <input
                                     type="text"
                                     placeholder="Search"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    value={searchQuer}
+                                    onChange={(e) => setSearchQuer(e.target.value)}
                                     className="w-full rounded-[5px] border-[1px] border-armsgrey pl-2 pr-2 py-1.5 focus-within:outline-none"
                                 />
                                 <div className="space-y-0 max-h-100% overflow-y-auto">
@@ -172,8 +160,8 @@ export const AgentSupplyView = () => {
                                         <Link
                                             key={c.id}
                                             // to={`/Candidate/${id}/${c.id}`}
-                                            to={`/Candidate/${c.id}`}
-                                            className={`block p-3 border-b ${c.id === id} hover:bg-gray-100
+                                            to={`/AgentSupplyView/${c.id}`}
+                                            className={`block p-3 border-b ${c.id === Number(id)} hover:bg-gray-100
                                                     `}
                                         >
                                             <div className="flex justify-between items-center">
@@ -207,28 +195,28 @@ export const AgentSupplyView = () => {
                                     </div>
                                     <div className="flex justify-start ">
                                         <div className="grid grid-cols-3 gap-4 pt-2 -full">
-                                            <div>
+                                        <div>
                                                 <p className="text-xs text-gray-600">Name of Agent</p>
-                                                <p className="text-sm font-bold mt-1">{AgentOrSupply?.NameOfAgent}</p>
+                                                <p className="text-sm font-bold mt-1">{agent?.name}</p>
                                             </div>
                                             <div>
                                                 <p className="text-xs text-gray-600"> Mobile Number</p>
-                                                <p className="text-sm font-bold mt-1">{AgentOrSupply?.MobileNumber}</p>
+                                                <p className="text-sm font-bold mt-1">{agent?.mobile_no}</p>
                                             </div>
                                             <div>
                                                 <p className="text-xs text-gray-600">WhatsApp Number</p>
-                                                <p className="text-sm font-bold mt-1">{AgentOrSupply?.WhatsAppNumber}</p>
+                                                <p className="text-sm font-bold mt-1">{agent?.whatsapp_no}</p>
                                             </div>
                                             <div>
                                                 <p className="text-xs text-gray-600">Email ID</p>
-                                                <p className="text-sm font-bold mt-1">{AgentOrSupply?.EmailID}</p>
+                                                <p className="text-sm font-bold mt-1">{agent?.email}</p>
                                             </div>
                                         </div>
                                         <Button
                                             onClick={openEditAgentsSupplierPopup}
                                             buttonType="button"
                                             buttonTitle="Edit"
-                                            className="px-4 py-1 bg-armsjobslightblue text-white rounded text-sm"
+                                            className="px-4 py-1 bg-armsjobslightblue text-sm text-armsWhite font-bold border-[1px] rounded-sm cursor-pointer hover:bg-armsWhite hover:text-armsjobslightblue hover:border-armsjobslightblue"
                                         />
                                     </div>
                                 </div>
@@ -239,17 +227,17 @@ export const AgentSupplyView = () => {
                                         <h2 className="text-xl font-bold">Eligibility & History</h2>
                                     </div>
                                     <div className="grid grid-cols-3 gap-4 pt-2">
-                                        <div>
+                                    <div>
                                             <p className="text-xs text-gray-600">Can the agent do recruitment?</p>
-                                            <p className="text-sm font-bold mt-1">{AgentOrSupply?.agentDoRecruitment}</p>
+                                            <p className="text-sm font-bold mt-1">{agent?.can_recruit}</p>
                                         </div>
                                         <div>
                                             <p className="text-xs text-gray-600">Have you been associated earlier with ARMSJOBS?</p>
-                                            <p className="text-sm font-bold mt-1">{AgentOrSupply?.AssociatedWithArms}</p>
+                                            <p className="text-sm font-bold mt-1">{agent?.associated_earlier}</p>
                                         </div>
                                         <div>
                                             <p className="text-xs text-gray-600">Can the agent do manpower supplying?</p>
-                                            <p className="text-sm font-bold mt-1">{AgentOrSupply?.agentDoManpower}</p>
+                                            <p className="text-sm font-bold mt-1">{agent?.can_supply_manpower}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -259,21 +247,21 @@ export const AgentSupplyView = () => {
                                         <h2 className="text-xl font-bold">Manpower info</h2>
                                     </div>
                                     <div className="grid grid-cols-3 gap-4 pt-2">
-                                        <div>
+                                    <div>
                                             <p className="text-xs text-gray-600">Categories You Can Supply</p>
-                                            <p className="text-sm font-bold mt-1">{AgentOrSupply?.CategoriesYouCanSupply}</p>
+                                            <p className="text-sm font-bold mt-1">{agent?.supply_categories}</p>
                                         </div>
                                         <div>
                                             <p className="text-xs text-gray-600">Quantity Estimates</p>
-                                            <p className="text-sm font-bold mt-1">{AgentOrSupply?.QuantityEstimates}</p>
+                                            <p className="text-sm font-bold mt-1">{agent?.quantity_estimates}</p>
                                         </div>
                                         <div>
                                             <p className="text-xs text-gray-600">Areas Covered</p>
-                                            <p className="text-sm font-bold mt-1">{AgentOrSupply?.AreasCovered}</p>
+                                            <p className="text-sm font-bold mt-1">{agent?.areas_covered}</p>
                                         </div>
                                     </div>
                                 </div>
-                                Additional info
+                                {/* Additional info */}
                                 <div className="mb-6 ">
                                     <div className="flex items-center justify-between mb-1 border-b">
                                         <h2 className="text-xl font-bold">Additional info</h2>
@@ -281,13 +269,13 @@ export const AgentSupplyView = () => {
                                     <div className="grid grid-cols-3 gap-4 pt-2">
                                         <div>
                                             <p className="text-xs text-gray-600">Additional Notes (Category Rates & Recruitment Rates)</p>
-                                            <p className="text-sm font-bold mt-1">{AgentOrSupply?.AdditionalNotes}</p>
+                                            <p className="text-sm font-bold mt-1">{agent?.additional_notes}</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Job History */}
-                                <div className="w-full border border-main rounded-t-lg p-0 min-h-[300px] bg-white">
+                                {/* <div className="w-full border border-main rounded-t-lg p-0 min-h-[300px] bg-white">
                                     <h3 className="text-armsWhite font-bold bg-main py-2 px-4 rounded-t-lg">Job History</h3>
                                     <table className="w-full">
                                         <thead>
@@ -301,10 +289,10 @@ export const AgentSupplyView = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {/* Add job history rows here */}
+                                          
                                         </tbody>
                                     </table>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 
@@ -326,7 +314,7 @@ export const AgentSupplyView = () => {
                                         onClick={handleAddRemark}
                                         buttonType="button"
                                         buttonTitle="Add"
-                                        className=" mx-auto px-4 py-1 bg-armsjobslightblue text-white rounded text-sm "
+                                        className="mx-auto px-4 py-1 bg-armsjobslightblue text-sm text-armsWhite font-semibold border-[1px] rounded-sm cursor-pointer hover:bg-armsWhite hover:text-armsjobslightblue hover:border-armsjobslightblue"
                                     />
                                     <div className="mt-4 space-y-4 max-h-[calc(100vh-400px)] overflow-y-auto">
                                         {/* Static remarks data */}

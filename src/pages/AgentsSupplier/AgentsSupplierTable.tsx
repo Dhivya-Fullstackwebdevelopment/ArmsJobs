@@ -1,6 +1,4 @@
-
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InputField } from "../../common/InputField";
 import { Button } from "../../common/Button";
 import { FaUser } from "react-icons/fa6";
@@ -11,148 +9,78 @@ import { IoMdSearch } from "react-icons/io";
 import { AddAgentsSupplierPopup } from "./AddAgentsSupplierPopup";
 import { EditAgentsSupplierPopup } from "./EditAgentSupplierPopup";
 import { useNavigate } from "react-router-dom";
+import { AgentSupplierTableShimmer } from "../../components/ShimmerLoading/ShimmerTable/AgentSupplierTableShimmer";
+import React from "react";
+import {  fetchAgentsList } from "../../Commonapicall/AgentsSupplierapicall/Agentsapis";
+import { DeleteAgentsPopup } from "./DeleteAgentsPopup";
 
-
-
-// Define a Candidate type
-interface AgentSupplier {
-
-  id: string;
-  fullName: string;
-  mobile: string;
-  whatsapp: string;
+export interface AgentSupplier {
+  current_location: any;
+  uae_experience_years: any;
+  category: any;
+  currently_employed: any;
+  data: any;
+  id: number;
+  agent_supplier_id: string;
+  name: string;
+  mobile_no: string;
+  whatsapp_no: string;
   email: string;
-  nationality: string;
-  currentLocation: string;
-  visaType: string;
-  visaExpiryDate: string;
-  availabilityToJoin: string;
-  positionApplyingFor: string;
-  category: string;
-  otherCategory?: string;
-  uaeExperience: string;
-  skills: string[];
-  tasksCanPerform: string[];
-  preferredWorkLocation: string[];
-  expectedSalary: string;
-  cvUrl: string;
-  relevantDocsUrl: string;
+  can_recruit: boolean | null;
+  associated_earlier: boolean | null;
+  can_supply_manpower: boolean | null;
+  supply_categories: string | null;
+  quantity_estimates: string | null;
+  areas_covered: string | null;
+  additional_notes: string | null;
+  remarks: string | null;
+  is_deleted: boolean;
   status: string;
-  createdAt: string;
-  availableForHire: boolean;
-  preferredJobRoles: string[];
-  UploadReleventDoc: string;
-  AdditionalNotes: string;
-  RefferalContact: string;
-  Status: string;
-  dateTime: string;
+  created_at: string;
 }
 
-// Define mock data for candidates
-const MOCK_AgentSupplier_DATA: AgentSupplier[] = [
-  {
-    id: "CND001",
-    fullName: "Alice Johnson",
-    mobile: "+971 55 111 2233",
-    whatsapp: "+971 55 111 2233",
-    email: "alice@example.com",
-    nationality: "Canadian",
-    currentLocation: "Dubai",
-    visaType: "N/A",
-    visaExpiryDate: "2025-12-31",
-    availabilityToJoin: "Immediately",
-    positionApplyingFor: "Frontend Developer",
-    category: "IT",
-    uaeExperience: "5 years",
-    skills: ["React", "Node.js", "JavaScript"],
-    tasksCanPerform: ["UI Development", "API Integration"],
-    preferredWorkLocation: ["Dubai", "Abu Dhabi"],
-    expectedSalary: "15,000 AED",
-    cvUrl: "https://example.com/resume/alice.pdf",
-    relevantDocsUrl: "https://example.com/docs/alice.zip",
-    status: "Active",
-    createdAt: "2023-05-15T10:30:00",
-    UploadReleventDoc: "",
-    AdditionalNotes: "",
-    RefferalContact: "",
-    Status: "",
-    dateTime: "",
-    availableForHire: true,
-    preferredJobRoles: ["Frontend Developer", "UI/UX Designer"]
-  },
-  {
-    id: "CND001",
-    fullName: "Alice ",
-    mobile: "+971 55 111 2233",
-    whatsapp: "+971 55 111 2233",
-    email: "alice@example.com",
-    nationality: "Canadian",
-    currentLocation: "Dubai",
-    visaType: "N/A",
-    visaExpiryDate: "2025-12-31",
-    availabilityToJoin: "Immediately",
-    positionApplyingFor: "Frontend Developer",
-    category: "IT",
-    uaeExperience: "5 years",
-    skills: ["React", "Node.js", "JavaScript"],
-    tasksCanPerform: ["UI Development", "API Integration"],
-    preferredWorkLocation: ["Dubai", "Abu Dhabi"],
-    expectedSalary: "15,000 AED",
-    cvUrl: "https://example.com/resume/alice.pdf",
-    relevantDocsUrl: "https://example.com/docs/alice.zip",
-    status: "Active",
-    createdAt: "2023-05-15T10:30:00",
-    UploadReleventDoc: "",
-    AdditionalNotes: "",
-    RefferalContact: "",
-    Status: "",
-    dateTime: "",
-    availableForHire: true,
-    preferredJobRoles: ["Frontend Developer", "UI/UX Designer"]
-  },
-  {
-    id: "CND001",
-    fullName: " Johnson",
-    mobile: "+971 55 111 2233",
-    whatsapp: "+971 55 111 2233",
-    email: "alice@example.com",
-    nationality: "Canadian",
-    currentLocation: "Dubai",
-    visaType: "N/A",
-    visaExpiryDate: "2025-12-31",
-    availabilityToJoin: "Immediately",
-    positionApplyingFor: "Frontend Developer",
-    category: "IT",
-    uaeExperience: "5 years",
-    skills: ["React", "Node.js", "JavaScript"],
-    tasksCanPerform: ["UI Development", "API Integration"],
-    preferredWorkLocation: ["Dubai", "Abu Dhabi"],
-    expectedSalary: "15,000 AED",
-    cvUrl: "https://example.com/resume/alice.pdf",
-    relevantDocsUrl: "https://example.com/docs/alice.zip",
-    status: "Active",
-    createdAt: "2023-05-15T10:30:00",
-    UploadReleventDoc: "",
-    AdditionalNotes: "",
-    RefferalContact: "",
-    Status: "",
-    dateTime: "",
-    availableForHire: true,
-    preferredJobRoles: ["Frontend Developer", "UI/UX Designer"]
-  },
-];
+export interface ApiResponse {
+  status: string;
+  data: any;
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: {
+    status: string;
+    message: string;
+    data: AgentSupplier[];
+  };
+}
+
 
 export const AgentSupplierTable = () => {
-  // const [agentSupplier, setAgentSupplier] = useState<AgentSupplier[]>(MOCK_AgentSupplier_DATA);
-  const [agentSupplier] = useState<AgentSupplier[]>(MOCK_AgentSupplier_DATA);
+  const [agentSupplier, setAgentSupplier] = useState<AgentSupplier[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10); // Default 10 items per page
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
   const indexOfLastCandidate = currentPage * itemsPerPage;
   const indexOfFirstCandidate = indexOfLastCandidate - itemsPerPage;
   const currentAgentSupplier = agentSupplier.slice(indexOfFirstCandidate, indexOfLastCandidate);
   const [showAddAgentsSupplierPopup, setShowAddAgentsSupplierPopup] = useState(false);
   const [showEditAgentsSupplierPopup, setShowEditAgentsSupplierPopup] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState<string | null>(null);
+  const [, setLoading] = useState(true);
+  const [, setError] = useState<string | null>(null);
+  const [showDeleteAgentsSupplierPopup, setShowDeleteAgentsPopup] = useState(false);
+  const [agentToDelete, setAgentToDelete] = useState<{ id: number, name: string } | null>(null);
+  ///const [selectedagents, setSelectedAgents] = useState<any>(null);
+
+
+  // Simulate loading state
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500); // Show shimmer for 1.5 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -177,8 +105,69 @@ export const AgentSupplierTable = () => {
   }
 
   const closeEditAgentsSupplierPopup = () => {
-    setShowEditAgentsSupplierPopup(false)
+    setShowDeleteAgentsPopup(false)
   }
+
+  // const openDeleteAgentsPopup = (Agents:any) => {
+  //   // setShowDeleteAgentsPopup(true);
+
+  //   setSelectedAgents(Agents);
+  //   setShowDeleteAgentsPopup(true);
+  //       console.log("Deleting the agents", Agents);
+  // }
+
+  const openDeleteAgentsPopup = (agent: AgentSupplier, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setAgentToDelete({ id: agent.id, name: agent.name });
+    setShowDeleteAgentsPopup(true);
+  };
+
+  const closeDeleteAgentsPopup = () => {
+    setShowDeleteAgentsPopup(false);
+    setAgentToDelete(null);
+  }
+
+  // const closeDeleteAgentsPopup = () => {
+  //   setShowDeleteAgentsPopup(false);
+  //   setAgentToDelete(null);
+  // };
+
+
+  useEffect(() => {
+    const fetchAgent = async () => {
+      try {
+        setLoading(true);
+        const response = await fetchAgentsList() as ApiResponse;
+        console.log("response?.data?.data", response?.results?.data)
+        setAgentSupplier(response?.results?.data);
+        //setTotalItems(response.count);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to fetch candidates");
+        console.error("Error fetching candidates:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAgent();
+  }, []);
+
+  // const handleDeleteClick = (agent: AgentSupplier, e: React.MouseEvent) => {
+  //   e.stopPropagation();
+  //   setAgentToDelete({ id: agent.id, name: agent.name });
+  // };
+
+  // Add a refresh function to update the list after deletion
+  const refreshAgentList = async () => {
+    try {
+      setLoading(true);
+      const response = await fetchAgentsList() as ApiResponse;
+      setAgentSupplier(response?.results?.data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch agents");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="p-6">
@@ -205,7 +194,7 @@ export const AgentSupplierTable = () => {
                   </div>
                 </div>
               }
-              className="flex items-center gap-2 bg-armsjobslightblue text-armsWhite border border-armsjobslightblue rounded px-4 py-2 font-bold  hover:text-armsjobslightblue hover:bg-armsWhite transition-colors duration-200"
+              className="flex items-center gap-2 bg-armsjobslightblue text-armsWhite border border-armsjobslightblue rounded px-4 py-2 font-bold  hover:text-armsjobslightblue hover:bg-armsWhite transition-colors duration-200 cursor-pointer"
             />
 
             {/* Search Input */}
@@ -221,7 +210,7 @@ export const AgentSupplierTable = () => {
 
             {/* Select Dropdown */}
             {/* <select className="border border-armsgrey px-3 py-2 rounded h-10 relative w-[170px]"> */}
-            <select className="w-[170px] rounded-[5px] border-[1px] border-armsgrey px-2 py-1.5 focus-within:outline-none">
+            <select className="w-[170px] rounded-[5px] border-[1px] border-armsgrey px-2 py-1.5 focus-within:outline-none cursor-pointer">
               <option value="all">All</option>
               <option value="Today">Today</option>
               <option value="Yesterday">Yesterday</option>
@@ -232,99 +221,114 @@ export const AgentSupplierTable = () => {
             </select>
           </div>
         </div>
-        {/* Table rendering */}
-        <div className="w-full overflow-x-auto">
-          <table className="w-full table-auto text-sm ">
-            <thead className="bg-main text-left">
-              <tr className="bg-main text-left text-armsWhite whitespace-nowrap">
-                <th className="bg-main px-2 py-3  ">Agents /<br /> Supplier ID</th>
-                <th className="bg-main px-2 py-3 ">Name of <br />Agent</th>
-                <th className="bg-main px-2 py-3 ">Mobile No</th>
-                <th className="bg-main px-2 py-3 ">WhatsApp No</th>
-                <th className="bg-main px-2 py-3 ">Email ID</th>
-                <th className="bg-main px-2 py-3 ">Can the agent do <br />Recruitment?</th>
-                <th className="bg-main px-2 py-3 ">Have you been associated
-                  <br />earlier with ARMSJOBS?</th>
-                <th className="bg-main px-2 py-3 ">Can the agent do
-                  <br />
-                  manpower supplying?</th>
-                <th className="bg-main px-2 py-3 ">Catogory you
-                  <br />
-                  can supply
-                </th>
-                <th className="bg-main px-2 py-3 ">Quantity
-                  <br />Estimate
-                </th>
-                <th className="bg-main px-2 py-3 ">Area covered<br /> (Emirates)</th>
-                <th className="bg-main px-2 py-3 ">Additional notes(catogory<br />Rates & Recruitment Rates)</th>
 
-                <th className="bg-main px-2 py-3 ">Status</th>
-                <th className="bg-main px-2 py-3 ">Created Date&Time</th>
-                <th className="bg-main px-2 py-3 sticky right-0 z-10">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="whitespace-nowrap ">
-              {currentAgentSupplier.map((agent) => (
-                <tr key={agent.id}
-                  onClick={() => navigate(`/AgentSupplyView/${agent.id}`)}
-                  className="border-b-2 border-armsgrey hover:bg-gray-100 ">
-                  <td className="px-2 py-3">{agent.id}</td>
-                  <td className="px-2 py-3">{agent.fullName}</td>
-                  <td className="px-2 py-3">{agent.mobile}</td>
-                  <td className="px-2 py-3">{agent.whatsapp}</td>
-                  <td className="px-2 py-3">{agent.email}</td>
-                  <td className="px-2 py-3">{agent.availableForHire ? "Yes" : "No"}</td>
-                  <td className="px-2 py-3">{agent.status}</td>
-                  <td className="px-2 py-3">{agent.uaeExperience}</td>
-                  <td className="px-2 py-3">{agent.category}</td>
-                  <td className="px-2 py-3">{agent.expectedSalary}</td>
-                  <td className="px-2 py-3">{agent.preferredWorkLocation.join(", ")}</td>
-                  <td className="px-2 py-3">{agent.AdditionalNotes || "-"}</td>
-                  <td className="px-2 py-3">{agent.Status || "-"}</td>
-                  <td className="px-2 py-3">{new Date(agent.createdAt).toLocaleString()}</td>
-                  <td className="px-2 py-3 sticky right-0 z-10 bg-armsWhite border-b-2 border-armsgrey">
-                    <td className="px-2 py-3">
-                      <div className="flex items-center space-x-2">
-                        {/* Edit Button */}
-                        <div
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevent row navigation
-                            openEditAgentsSupplierPopup(); // Open the popup
-                          }}
-                          className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
-                          <MdModeEdit className="text-white group-hover:text-armsjobslightblue text-xl" />
-                          {/* Tooltip */}
-                          <div className="absolute -top-6.5 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
-                            Edit
-                          </div>
-                        </div>
+        {/* Show shimmer while loading */}
+        {isLoading ? (
+          <AgentSupplierTableShimmer />
+        ) : (
+          <>
+            {/* Table rendering */}
+            <div className="w-full overflow-x-auto">
+              <table className="w-full table-auto text-sm ">
+                <thead className="bg-main text-left">
+                  <tr className="bg-main text-left text-armsWhite whitespace-nowrap">
+                    <th className="bg-main px-2 py-3  ">Agents /<br /> Supplier ID</th>
+                    <th className="bg-main px-2 py-3 ">Name of <br />Agent</th>
+                    <th className="bg-main px-2 py-3 ">Mobile No</th>
+                    <th className="bg-main px-2 py-3 ">WhatsApp No</th>
+                    <th className="bg-main px-2 py-3 ">Email ID</th>
+                    <th className="bg-main px-2 py-3 ">Can the agent do <br />Recruitment?</th>
+                    <th className="bg-main px-2 py-3 ">Have you been associated
+                      <br />earlier with ARMSJOBS?</th>
+                    <th className="bg-main px-2 py-3 ">Can the agent do
+                      <br />
+                      manpower supplying?</th>
+                    <th className="bg-main px-2 py-3 ">Catogory you
+                      <br />
+                      can supply
+                    </th>
+                    <th className="bg-main px-2 py-3 ">Quantity
+                      <br />Estimate
+                    </th>
+                    <th className="bg-main px-2 py-3 ">Area covered<br /> (Emirates)</th>
+                    <th className="bg-main px-2 py-3 ">Additional notes(catogory<br />Rates & Recruitment Rates)</th>
 
-                        {/* Delete Button */}
-                        <div className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
-                          <MdDelete className="text-white group-hover:text-armsjobslightblue text-xl" />
-                          {/* Tooltip */}
-                          <div className="absolute -top-6.5 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
-                            Delete
+                    <th className="bg-main px-2 py-3 ">Status</th>
+                    <th className="bg-main px-2 py-3 ">Created Date&Time</th>
+                    <th className="bg-main px-2 py-3 sticky right-0 z-10">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="whitespace-nowrap ">
+                  {currentAgentSupplier.map((agent) => (
+                    <tr key={agent.id}
+                      onClick={() => navigate(`/AgentSupplyView/${agent.id}`)}
+                      className="border-b-2 border-armsgrey hover:bg-gray-100 cursor-pointer">
+                      <td className="px-2 py-5">{agent.id}</td>
+                      <td className="px-2 py-5">{agent.name}</td>
+                      <td className="px-2 py-5">{agent.mobile_no}</td>
+                      <td className="px-2 py-5">{agent.whatsapp_no}</td>
+                      <td className="px-2 py-5">{agent.email}</td>
+                      <td className="px-2 py-5">{agent.can_recruit ? "Yes" : "No"}</td>
+                      <td className="px-2 py-5">{agent.associated_earlier}</td>
+                      <td className="px-2 py-5">{agent.can_supply_manpower}</td>
+                      <td className="px-2 py-5">{agent.supply_categories}</td>
+                      <td className="px-2 py-5">{agent.quantity_estimates}</td>
+                      <td className="px-2 py-5">{agent.areas_covered}</td>
+                      <td className="px-2 py-5">{agent.additional_notes || "-"}</td>
+                      <td className="px-2 py-5">{agent.status || "-"}</td>
+                      <td className="px-2 py-5">{new Date(agent.created_at).toLocaleString()}</td>
+                      <td className="px-2 py-5 sticky right-0 z-10 bg-armsWhite border-b-2 border-armsgrey">
+                        
+                          <div className="flex items-center space-x-2">
+                            {/* Edit Button */}
+                            <div
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent row navigation
+                                openEditAgentsSupplierPopup(); // Open the popup
+                              }}
+                              className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
+                              <MdModeEdit className="text-white group-hover:text-armsjobslightblue text-xl" />
+                              {/* Tooltip */}
+                              <div className="absolute -top-6.5 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
+                                Edit
+                              </div>
+                            </div>
+
+                            {/* Delete Button */}
+                            <div className="relative flex items-center justify-center border-[1px] border-armsjobslightblue rounded-full px-2 py-2 cursor-pointer group bg-armsjobslightblue hover:bg-white hover:border-armsjobslightblue transition-all duration-200">
+                              <MdDelete className="text-white group-hover:text-armsjobslightblue text-xl"
+                                onClick={(e) => openDeleteAgentsPopup(agent, e)}
+                              />
+                              {/* Tooltip */}
+                              <div
+                                onClick={(e) => openDeleteAgentsPopup(agent, e)}
+                                className="absolute -top-6.5 bg-armsjobslightblue  text-armsWhite text-xs font-semibold px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
+                                Delete
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </td>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          currentPage={currentPage}
-          totalItems={agentSupplier.length}
-          itemsPerPage={itemsPerPage}
-          onPageChange={handlePageChange}
-          onItemsPerPageChange={handleItemsPerPageChange}
-        />
+                        
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalItems={agentSupplier.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+              onItemsPerPageChange={handleItemsPerPageChange}
+            />
+          </>
+        )}
       </div>
       {showAddAgentsSupplierPopup && <AddAgentsSupplierPopup closePopup={closeAddAgentsSupplierPopup} />}
       {showEditAgentsSupplierPopup && <EditAgentsSupplierPopup closePopup={closeEditAgentsSupplierPopup} />}
+      {/* {showDeleteAgentsSupplierPopup && agentToDelete && (<DeleteAgentsPopup closePopup={closeDeleteAgentsPopup} agentData={agentToDelete} refreshData={refreshAgentList}/>)} */}
+      {showDeleteAgentsSupplierPopup && agentToDelete && (<DeleteAgentsPopup closePopup={closeDeleteAgentsPopup} agentData={agentToDelete} refreshData={refreshAgentList} />
+      )}
     </div>
   );
 };

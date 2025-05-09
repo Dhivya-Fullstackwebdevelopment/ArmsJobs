@@ -159,7 +159,7 @@ export const ClientEnquiryView = () => {
                             icon={
                                 <FaArrowLeft />
                             }
-                            className="text-sm font-semibold border border-armsBlack px-4 py-2 rounded-md"
+                            className="px-4 py-2 bg-armsjobslightblue text-sm font-semibold text-armsWhite border-[1px] rounded-md cursor-pointer hover:bg-armsWhite hover:text-armsjobslightblue hover:border-armsjobslightblue"
                         />
                     </div>
                 </div>
@@ -239,7 +239,7 @@ export const ClientEnquiryView = () => {
                                             onClick={openEditClientEnquiryPopup}
                                             buttonType="button"
                                             buttonTitle="Edit"
-                                            className="  px-4 py-1 bg-armsjobslightblue text-white rounded text-sm"
+                                            className="px-4 py-1 bg-armsjobslightblue text-sm text-armsWhite font-semibold border-[1px] rounded-sm cursor-pointer hover:bg-armsWhite hover:text-armsjobslightblue hover:border-armsjobslightblue"
                                         />
                                     </div>
                                 </div>
@@ -347,7 +347,7 @@ export const ClientEnquiryView = () => {
 
 
                                 {/* Job History */}
-                                <div className="w-full border border-main rounded-t-lg p-0 min-h-[300px] bg-white">
+                                {/* <div className="w-full border border-main rounded-t-lg p-0 min-h-[300px] bg-white">
                                     <h3 className="text-armsWhite font-bold bg-main py-2 px-4 rounded-t-lg">Job History</h3>
                                     <table className="w-full">
                                         <thead>
@@ -361,10 +361,10 @@ export const ClientEnquiryView = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {/* Add job history rows here */}
+                                           
                                         </tbody>
                                     </table>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 
@@ -386,7 +386,7 @@ export const ClientEnquiryView = () => {
                                         onClick={handleAddRemark}
                                         buttonType="button"
                                         buttonTitle="Add"
-                                        className=" mx-auto px-4 py-1 bg-armsjobslightblue text-white rounded text-sm "
+                                        className="mx-auto px-4 py-1 bg-armsjobslightblue text-sm text-armsWhite font-semibold border-[1px] rounded-sm cursor-pointer hover:bg-armsWhite hover:text-armsjobslightblue hover:border-armsjobslightblue"
                                     />
                                     <div className="mt-4 space-y-4 max-h-[calc(100vh-400px)] overflow-y-auto">
                                         {/* Static remarks data */}

@@ -4,7 +4,6 @@ import Login from './components/Login/Login'
 import "./index.css"
 import { Dashboard } from './pages/Dashboard';
 import { Candidate } from './pages/Candidate'
-import { UAEOwnFreeLauncerVisa } from './pages/UAEOwnFreelancerVisa';
 import { AgentsSupplier } from './pages/AgentsSupplier';
 import { ManpowerSupply } from './pages/ManPowerSupply';
 import { OverseasRecruitment } from './pages/OverseasRecruitment';
@@ -31,7 +30,6 @@ function App() {
           {/* <Route path="/" element={<LoginLayout />}> */}
             <Route path="/Dashboard" element={<Dashboard />} />
             <Route path="/Candidate" element={<Candidate />} />
-            <Route path="/UAEOwnFreeLauncerVisa" element={<UAEOwnFreeLauncerVisa />} />
             <Route path="/AgentsSupplier" element={<AgentsSupplier />} />
             <Route path="/ManpowerSupply" element={<ManpowerSupply />} />
             <Route path="/OverseasRecruitment" element={<OverseasRecruitment />} />

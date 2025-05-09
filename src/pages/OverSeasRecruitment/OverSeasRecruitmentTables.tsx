@@ -152,7 +152,7 @@ export const OverSeasRecruitmentTable = () => {
                   </div>
                 </div>
               }
-              className="flex items-center gap-2 bg-armsjobslightblue text-armsWhite border border-armsjobslightblue rounded px-4 py-2 font-bold  hover:text-armsjobslightblue hover:bg-armsWhite transition-colors duration-200"
+              className="flex items-center gap-2 bg-armsjobslightblue text-armsWhite border border-armsjobslightblue rounded px-4 py-2 font-bold  hover:text-armsjobslightblue hover:bg-armsWhite transition-colors duration-200 cursor-pointer"
             />
 
             {/* Search Input */}
@@ -167,7 +167,7 @@ export const OverSeasRecruitmentTable = () => {
             </div>
 
             {/* Select Dropdown */}
-            <select className="w-[170px] rounded-[5px] border-[1px] border-armsgrey px-2 py-1.5 focus-within:outline-none">
+            <select className="w-[170px] rounded-[5px] border-[1px] border-armsgrey px-2 py-1.5 focus-within:outline-none cursor-pointer">
               <option value="all">All</option>
               <option value="Today">Today</option>
               <option value="Yesterday">Yesterday</option>
@@ -212,7 +212,7 @@ export const OverSeasRecruitmentTable = () => {
               {currentRecruitmentAgencies.map((agency) => (
                 <tr key={agency.id} 
                 onClick={() => navigate(`/OverSeasRecruitment/${agency.id}`)}
-                className="border-b-2 border-armsgrey hover:bg-gray-100">
+                className="border-b-2 border-armsgrey hover:bg-gray-100 cursor-pointer">
                   <td className="px-2 py-7">{agency.id}</td>
                   <td className="px-2 py-7">{agency.companyName}</td>
                   <td className="px-2 py-7">{agency.country}</td>

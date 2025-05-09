@@ -208,7 +208,7 @@ export const ManPowerSupplyTable = () => {
                   </div>
                 </div>
               }
-              className="flex items-center gap-2 bg-armsjobslightblue text-armsWhite border border-armsjobslightblue rounded px-4 py-2 font-bold  hover:text-armsjobslightblue hover:bg-armsWhite transition-colors duration-200"
+              className="flex items-center gap-2 bg-armsjobslightblue text-armsWhite border border-armsjobslightblue rounded px-4 py-2 font-bold  hover:text-armsjobslightblue hover:bg-armsWhite transition-colors duration-200 cursor-pointer"
             />
 
             {/* Search Input */}
@@ -223,7 +223,7 @@ export const ManPowerSupplyTable = () => {
             </div>
 
             {/* Select Dropdown */}
-            <select className="w-[170px] rounded-[5px] border-[1px] border-armsgrey px-2 py-1.5 focus-within:outline-none">
+            <select className="w-[170px] rounded-[5px] border-[1px] border-armsgrey px-2 py-1.5 focus-within:outline-none cursor-pointer">
               <option value="all">All</option>
               <option value="Today">Today</option>
               <option value="Yesterday">Yesterday</option>
@@ -268,7 +268,7 @@ export const ManPowerSupplyTable = () => {
               {currentManPower.map((manpower, index) => (
                 <tr key={index}
                 onClick={() => navigate(`/ManPowerSupplyView/${manpower.id}`)}
-                className="border-b-2 border-armsgrey hover:bg-gray-100">
+                className="border-b-2 border-armsgrey hover:bg-gray-100 cursor-pointer">
                   <td className="px-2 py-3">{manpower.id}</td>
                   <td className="px-2 py-3">{manpower.fullName}</td>
                   <td className="px-2 py-3">{manpower.contactPerson || "-"}</td>

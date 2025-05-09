@@ -20,8 +20,7 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
     const tabs = ['Company Details', "Recruitment Info", "Documents & Notes"];
     return (
         <div className="fixed inset-0 bg-armsAsh bg-opacity-70 flex justify-center items-start pt-25 z-50">
-
-            <div className="bg-white rounded-lg shadow-lg w-24/25 h-[75%] p-6 relative">
+            <div className="bg-white rounded-lg shadow-lg w-24/25 h-[75%] max-xl:!h-[85%] max-lg:!h-[90%] p-6 relative">
                 {/* Heading */}
                 <div className="relative mb-5">
                     <h2 className="text-xl font-bold mb-4 border-b-2 border-armsgrey pb-3">
@@ -40,7 +39,7 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab)}
-                            className={`px-4 py-2 text-sm font-bold ${activeTab === tab
+                            className={`px-4 py-2 text-sm font-bold cursor-pointer ${activeTab === tab
                                 ? "bg-main text-white"
                                 : "text-black"
                                 }`}
@@ -49,17 +48,15 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                         </button>
                     ))}
                 </div>
-                {/* Content */}
-
+                {/* Company Details */}
                 {activeTab === "Company Details" && (
                     <div className="max-w-full mx-auto p-0 pl-1">
-                        <form className="flex flex-row gap-1 items-start">
+                        <div className="flex flex-row gap-1 items-start">
                             <div className="flex gap-6 w-3/4">
                                 {/* Form Fields */}
                                 <div className="flex flex-col gap-4 flex-1">
-                                    {/* First Row - 4 fields */}
-                                    <div className="flex flex-wrap gap-4">
-                                        <div className="flex-1 min-w-[210px]">
+                                    <div className="grid max-xl:!grid-cols-3 grid-cols-4 gap-4 ">
+                                        <div>
                                             <label className="text-sm font-semibold mb-1">
                                                 Company Name
                                             </label>
@@ -70,9 +67,8 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                                                 label={""}
                                             />
                                         </div>
-
-
-                                        <div className="flex-1 min-w-[220px]">
+                                        {/* Country */}
+                                        <div>
                                             <label className="text-sm font-semibold mb-1">
                                                 Country
                                             </label>
@@ -83,8 +79,8 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                                                 label={""}
                                             />
                                         </div>
-
-                                        <div className="flex-1 min-w-[220px]">
+                                        {/* Contact Person Name */}
+                                        <div>
                                             <label className="text-sm font-semibold mb-1">
                                                 Contact Person Name
                                             </label>
@@ -95,9 +91,8 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                                                 label={""}
                                             />
                                         </div>
-
-
-                                        <div className="flex-1 min-w-[220px]">
+                                        {/* Mobile Number */}
+                                        <div>
                                             <label className="text-sm font-semibold mb-1">
                                                 Mobile Number
                                             </label>
@@ -108,11 +103,8 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                                                 label={""}
                                             />
                                         </div>
-                                    </div>
-                                    <div className="flex flex-wrap gap-4">
-
-
-                                        <div className="w-1/5 min-w-[250px]">
+                                        {/* WhatsApp Number */}
+                                        <div>
                                             <label className="text-sm font-semibold mb-1 block">
                                                 WhatsApp Number
                                             </label>
@@ -123,8 +115,8 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                                                 label=""
                                             />
                                         </div>
-                                        <div className="w-1/5 min-w-[250px]">
-
+                                        {/* Email ID */}
+                                        <div>
                                             <label className="text-sm font-semibold mb-1">
                                                 Email ID
                                             </label>
@@ -138,17 +130,19 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 )}
+                {/* Recruitment Info */}
                 {activeTab === "Recruitment Info" && (
                     <div className="max-w-full mx-auto p-0 pl-1">
-                        <form className="flex flex-row gap-1 items-start">
+                        <div className="flex flex-row gap-1 items-start">
                             <div className="flex gap-6 w-3/4">
                                 {/* Form Fields */}
                                 <div className="flex flex-col gap-4 flex-1">
-                                    <div className="flex flex-wrap gap-4">
-                                        <div className="flex-1 min-w-[220px]">
+                                    <div className="grid grid-cols-3 max-lg:!grid-cols-2 gap-4">
+                                        {/* Categories You Can Provide */}
+                                        <div>
                                             <label className="text-sm font-semibold mb-1">
                                                 Categories You Can Provide
                                             </label>
@@ -159,7 +153,8 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                                                 label={""}
                                             />
                                         </div>
-                                        <div className="flex-1 min-w-[220px]">
+                                        {/* Nationality of Workers */}
+                                        <div>
                                             <label className="text-sm font-semibold mb-1">
                                                 Nationality of Workers
                                             </label>
@@ -170,7 +165,8 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                                                 label={""}
                                             />
                                         </div>
-                                        <div className="flex-1 min-w-[220px]">
+                                        {/* Mobilization Time */}
+                                        <div>
                                             <label className="text-sm font-semibold mb-1">
                                                 Mobilization Time
                                             </label>
@@ -181,53 +177,53 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                                                 label={""}
                                             />
                                         </div>
-                                    </div>
-
-                                    <div className="flex flex-col gap-2 mt-2">
-                                        <label className="text-sm font-semibold mb-1">
-                                            UAE Deployment Experience
-                                        </label>
-                                        <div className="flex gap-6">
-                                            <label className="flex items-center gap-2">
-                                                <input
-                                                    type="radio"
-                                                    name="UAE Deployment Experience"
-                                                    value="yes"
-                                                    className="accent-blue-600"
-                                                />
-                                                Yes
+                                        {/* UAE Deployment Experience */}
+                                        <div>
+                                            <label className="text-sm font-semibold mb-1">
+                                                UAE Deployment Experience
                                             </label>
-                                            <label className="flex items-center gap-2">
-                                                <input
-                                                    type="radio"
-                                                    name="UAE Deployment Experience"
-                                                    value="no"
-                                                    className="accent-blue-600"
-                                                />
-                                                No
-                                            </label>
+                                            <div className="flex gap-6">
+                                                <label className="flex items-center gap-2 cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="UAE Deployment Experience"
+                                                        value="yes"
+                                                        className="w-5 h-5 cursor-pointer"
+                                                    />
+                                                    Yes
+                                                </label>
+                                                <label className="flex items-center gap-2 cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="UAE Deployment Experience"
+                                                        value="no"
+                                                        className="w-5 h-5 cursor-pointer"
+                                                    />
+                                                    No
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 )}
-                {/* Documents & Notes */}
+
                 {activeTab === "Documents & Notes" && (
-                    <div className="flex flex-wrap gap-2 px-4 w-1/2">
+                    <div className="grid grid-cols-2 gap-2 px-4 w-1/2 max-xl:!w-3/4 max-lg:!w-full">
                         {/* <div className="flex flex-col gap-2">
-                            <label htmlFor="uploadFile" className="text-sm font-semibold mb-1">
-                                Upload Relevant Documents (License Copy / Profile / Exp Certificate etc)
-                            </label>
-                            <input
-                                type="file"
-                                id="uploadFile"
-                                name="uploadFile"
-                                className="w-full rounded-[5px] border-[1px] border-armsgrey px-2 py-1.5 text-sm file:mr-4 file:py-1.5 file:px-4 file:rounded file:border-0 file:text-white file:bg-armblue hover:file:bg-blue-600"
-                            />
-                        </div> */}
-                        <div className="flex flex-col gap-2 flex-1">
+                                   <label htmlFor="uploadFile" className="text-sm font-semibold mb-1">
+                                       Upload Relevant Documents (License Copy / Profile / Exp Certificate etc)
+                                   </label>
+                                   <input
+                                       type="file"
+                                       id="uploadFile"
+                                       name="uploadFile"
+                                       className="w-full rounded-[5px] border-[1px] border-armsgrey px-2 py-1.5 text-sm file:mr-4 file:py-1.5 file:px-4 file:rounded file:border-0 file:text-white file:bg-armblue hover:file:bg-blue-600"
+                                   />
+                               </div> */}
+                        <div>
                             <label htmlFor="Uploadcv" className="text-sm font-semibold">
                                 Upload CV
                             </label>
@@ -248,13 +244,14 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                                 <Button
                                     buttonType="button"
                                     buttonTitle="Browse Files"
-                                    className="bg-armsjobslightblue text-armsWhite font-semibold px-4 py-1 rounded hover:bg-armsWhite hover:text-armsjobslightblue border border-armsjobslightblue mb-2"
+                                    className="bg-armsjobslightblue cursor-pointer text-armsWhite font-semibold px-4 py-1 rounded hover:bg-armsWhite hover:text-armsjobslightblue border border-armsjobslightblue mb-2"
                                 />
                                 <p className="text-xs text-gray-400 mb-5">Max file size 500KB.</p>
                             </div>
-
                         </div>
-                        <div className="flex flex-col gap-2 flex-1">
+
+
+                        <div>
                             <label htmlFor="additionalDetails" className="text-sm font-semibold mb-1">
                                 Additional Details
                             </label>
@@ -262,12 +259,13 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                                 id="additionalDetails"
                                 name="additionalDetails"
                                 rows={4}
-                                className="w-full rounded-[5px] border-[1px] border-armsgrey px-2 py-1.5 focus:outline-none resize-y"
+                                className="w-full h-48 rounded-[5px] border-[1px] border-armsgrey px-2 py-1.5 focus:outline-none resize-y"
                                 placeholder="Enter details here..."
                             />
                         </div>
                     </div>
                 )}
+
 
                 {/* Buttons */}
                 <div className="absolute bottom-0 left-0 right-0 py-4 ">
@@ -277,7 +275,7 @@ export const EditOverSeasPopup: React.FC<OverSeasAddPopupProps> = ({
                                 onClick={closePopup}
                                 buttonType="button"
                                 buttonTitle="Cancel"
-                                className="px-7 py-2.5 text-armsBlack rounded-sm font-semibold hover:bg-gray-200"
+                                className="px-7 py-2.5 cursor-pointer text-armsBlack rounded-sm font-semibold hover:bg-gray-200"
                             />
                         </div>
                         <div>

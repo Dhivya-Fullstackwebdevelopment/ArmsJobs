@@ -131,7 +131,7 @@ export const Header = () => {
                 <img
                   src={Profile}
                   alt="Profile"
-                  className="w-8 h-8 object-cover"
+                  className="w-9 h-9 object-cover"
                 />
                 <span className="text-armsBlack font-bold ml-2">shana</span>
               </div>
